@@ -6,7 +6,7 @@ before_install:
   - docker build -t leonvzd/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run leonvz/dreact-test npm test -- --coverage
+  - docker run leonvzd/react-test npm test -- --coverage
 
 after_success:
   - docker build -t leonvzd/multi-client ./client
