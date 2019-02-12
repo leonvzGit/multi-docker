@@ -1,0 +1,40 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t leonvzd/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run leonvz/dreact-test npm test -- --coverage
+
+after_success:
+  - docker build -t leonvzd/multi-client ./client
+  - docker build -t leonvzd/multi-ngnix ./nginx
+  - docker build -t leonvzd/multi-server ./server
+  - docker build -t leonvzd/multi-worker ./worker
+
+  # login to docker hub
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # push to docker hub
+  - docker push leonvzd/multi-client
+  - docker push leonvzd/multi-nginx
+  - docker push leonvzd/multi-server
+  - docker push leonvzd/multi-worker
+#deploy:
+ # provider: elasticbeanstalk
+ # region: "us-east-2"
+ # app: "docker-React"
+ # env: "DockerReact-env-1"
+ # bucket_name: "elasticbeanstalk-us-east-2-695457323481"
+ # bucket_path: "docker-React"
+ # on:
+ #   branch: master
+ # access_key_id: $AWS_ACCESS_KEY
+ # secret_access_key:
+ #     secure: "$AWS_SECRET_KEY"
+
+
+
+    
