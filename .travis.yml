@@ -10,7 +10,7 @@ script:
 
 after_success:
   - docker build -t leonvzd/multi-client ./client
-  - docker build -t leonvzd/multi-ngnix ./nginx
+  - docker build -t leonvzd/multi-nginx ./nginx
   - docker build -t leonvzd/multi-server ./server
   - docker build -t leonvzd/multi-worker ./worker
 
